@@ -1,3 +1,4 @@
 language: java
 script:
-- cd nieumarli; mvn test
+- cd nieumarli
+- mvn clean test
