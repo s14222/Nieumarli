@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.junit.*;
 import com.s14222.tau.finder.*;
 public class TrupTest {
+
   @Test
     public void testTrupa() {
       Trup trup = new Trup();

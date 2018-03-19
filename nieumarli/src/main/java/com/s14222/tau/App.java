@@ -18,7 +18,7 @@ public class App
 
         System.out.println( "Hello World!" );
 
-        UndeadManagerImpl undeadManager;
+        /*UndeadManagerImpl undeadManager;
 
         String url = "jdbc:mysql://localhost/aga";
         try {
@@ -41,6 +41,6 @@ public class App
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }
