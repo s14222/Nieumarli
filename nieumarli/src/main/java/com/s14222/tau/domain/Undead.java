@@ -51,7 +51,7 @@ public class Undead{
         this.sila = sila;
     
     }
-
+    public Undead(){}
     public Undead(int id, String nazwa, int level, int zycie, int sila){
         this.id = id;
         this.nazwa = nazwa;
