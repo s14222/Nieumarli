@@ -12,13 +12,13 @@ public class UndeadTest {
 
     @Test
     public void TestDodania(){
-        Undead undead = new Undead(0, "Trupa",1,100,100);
+        Undead undead = new Undead(0, "Trups",1,100,100);
         try {
             UndeadManagerImpl undeadManager = new UndeadManagerImpl();
             undeadManager.addUndead(undead);
             List<Undead> undeads = undeadManager.getAllUndeads();
             for(Undead u : undeads) {
-                if(u.getNazwa().contains("Trupa")){
+                if(u.getNazwa().contains("Trups")){
                     //undeadManager.deleteUndead(u);
                     return;
                 }
@@ -32,7 +32,7 @@ public class UndeadTest {
 
     @Test
     public void TestUsuniecia() {
-        Undead undead = new Undead(0, "Trupa", 1, 100, 100);
+        Undead undead = new Undead(0, "Trups", 1, 100, 100);
 
         try {
             UndeadManagerImpl undeadManager = new UndeadManagerImpl();
@@ -40,7 +40,7 @@ public class UndeadTest {
             List<Undead> undeads = undeadManager.getAllUndeads();
 
             for (Undead u : undeads) {
-                if (u.getNazwa().contains("Trupa")) {
+                if (u.getNazwa().contains("Trups")) {
                     undeadManager.deleteUndead(u);
                     System.out.println("Usunieto Undead: " + u.nazwa);
                     return;
