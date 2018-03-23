@@ -33,17 +33,24 @@ public class UndeadTest {
     @Test
     public void TestUsuniecia() {
         Undead undead = new Undead(0, "Trups", 1, 100, 100);
-
+        Undead toDelete = null;
         try {
             UndeadManagerImpl undeadManager = new UndeadManagerImpl();
-            //undeadManager.addUndead(undead);
+            undeadManager.addUndead(undead);
             List<Undead> undeads = undeadManager.getAllUndeads();
 
             for (Undead u : undeads) {
                 if (u.getNazwa().contains("Trups")) {
-                    undeadManager.deleteUndead(u);
-                    System.out.println("Usunieto Undead: " + u.nazwa);
-                    return;
+                    toDelete = u;
+                }
+            }
+            if(toDelete == null) {
+                fail();
+            }
+            undeadManager.deleteUndead(toDelete);
+            for (Undead u : undeads) {
+                if (u.getNazwa().contains("Trups")) {
+                   fail();
                 }
             }
         } catch (SQLException e) {
