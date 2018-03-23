@@ -1,4 +1,6 @@
 language: java
+services:
+- mysql
 script:
 - cd nieumarli
 - mvn clean test
