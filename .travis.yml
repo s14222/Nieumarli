@@ -1,6 +1,8 @@
 language: java
 services:
 - mysql
+before_install:
+- mysql -e 'CREATE DATABASE aga;'
 script:
 - cd nieumarli
 - mvn clean test
