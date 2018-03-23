@@ -1,4 +1,4 @@
-/*package com.s14222.tau.dbdemo.service;
+package com.s14222.tau.dbdemo.service;
 
 import com.s14222.tau.domain.Undead;
 
@@ -156,4 +156,3 @@ public void updateUndead(Undead undead){
                 prepareStatement("UPDATE `undeads` SET `nazwa` = ?, `zycie` = ?, `sila` = ?, `level` = ? WHERE `undeads`.`id` = ?;");
     }
 }
-*/

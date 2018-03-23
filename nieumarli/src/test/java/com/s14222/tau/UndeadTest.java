@@ -1,4 +1,4 @@
-/*package com.s14222.tau;
+package com.s14222.tau;
 
 import com.s14222.tau.dbdemo.service.UndeadManagerImpl;
 import com.s14222.tau.domain.Undead;
@@ -52,4 +52,4 @@ public class UndeadTest {
         fail();
     }
 }
-*/
+

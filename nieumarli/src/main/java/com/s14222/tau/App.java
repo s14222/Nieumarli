@@ -1,6 +1,6 @@
 package com.s14222.tau;
 
-//import com.s14222.tau.dbdemo.service.UndeadManagerImpl;
+import com.s14222.tau.dbdemo.service.UndeadManagerImpl;
 import com.s14222.tau.domain.Undead;
 
 import java.sql.DriverManager;
@@ -18,7 +18,7 @@ public class App
 
         System.out.println( "Hello World!" );
 
-        /*UndeadManagerImpl undeadManager;
+        UndeadManagerImpl undeadManager;
 
         String url = "jdbc:mysql://localhost/aga";
         try {
@@ -41,6 +41,6 @@ public class App
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 }

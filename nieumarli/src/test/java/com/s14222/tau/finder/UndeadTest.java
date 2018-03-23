@@ -70,7 +70,7 @@ public class UndeadTest {
         assertThat(undeadList, hasItem(undeadRepository.getById(1)));
 
         try{
-            Undead uneadToCatch = undeadList.get(0);
+            Undead undeadToCatch = undeadList.get(0);
         }
 
         catch(IndexOutOfBoundsException aIndexOutOfBoundsException){
