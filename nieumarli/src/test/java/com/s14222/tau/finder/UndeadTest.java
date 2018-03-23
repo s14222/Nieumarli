@@ -1,4 +1,4 @@
-package com.s14222.tau.finder;
+/*package com.s14222.tau.finder;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -27,7 +27,7 @@ public class UndeadTest {
       assertEquals(trup.sila, 6);
 
     }
-    */
+
 
     UndeadRepository undeadRepository;
     Undead undead = new Undead(1, "Zombie", 1, 100, 10);
@@ -96,3 +96,4 @@ public class UndeadTest {
     }
 
 }
+*/
