@@ -13,9 +13,15 @@ public interface UndeadRepository{
 
     public Undead getById(int id);
     public List<Undead> getAll();
-    public void add(Undead u);
-    public Undead deleteById(int id);
-    public int updateById(Undead u);
+    public int add(Undead undead);
+
+
+    public int deleteById(int id);
+
+
+    public int updateById(Undead undead);
+
+
     void dropTable();
 
 }

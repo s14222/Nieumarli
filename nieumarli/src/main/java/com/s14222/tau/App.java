@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class App 
 {
-    public static void main( String[] args )
+    /*public static void main( String[] args )
     {
 
         System.out.println( "Hello World!" );
@@ -26,13 +26,13 @@ public class App
 
             undeadManager = new UndeadManagerImpl(DriverManager.getConnection(url,"root", ""));
             Undead undead = new Undead(0, "Aga", 100, 100, 100);
-            undeadManager.addUndead(undead);
+            undeadManager.add(undead);
 
-            List<Undead> undeads = undeadManager.getAllUndeads();
+            List<Undead> undeads = undeadManager.getAll();
 
             for(Undead u : undeads ) {
                 if(u.getNazwa().contains("Aga")){
-                    undeadManager.deleteUndead(u);
+                    undeadManager.deleteById(id);
                     System.out.println("Usunieto Undead: " + u.nazwa);
                 }
                 System.out.println("Undead: " + u.nazwa);
@@ -42,5 +42,11 @@ public class App
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }*/
+
+    public static void main( String[] args )
+    {
+        System.out.println( "Hello World!" );
     }
+
 }

@@ -1,0 +1,36 @@
+-------------------------------------------------------------------------------
+Test set: com.s14222.tau.UndeadTest
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 0, Errors: 8, Skipped: 0, Time elapsed: 0.169 sec <<< FAILURE! - in com.s14222.tau.UndeadTest
+TestUpdate(com.s14222.tau.UndeadTest)  Time elapsed: 0.154 sec  <<< ERROR!
+java.lang.NullPointerException: null
+	at com.s14222.tau.UndeadTest.initRepository(UndeadTest.java:93)
+
+TestUpdate(com.s14222.tau.UndeadTest)  Time elapsed: 0.154 sec  <<< ERROR!
+java.lang.NullPointerException: null
+	at com.s14222.tau.UndeadTest.dropRepository(UndeadTest.java:104)
+
+getAllTest(com.s14222.tau.UndeadTest)  Time elapsed: 0.005 sec  <<< ERROR!
+java.lang.NullPointerException: null
+	at com.s14222.tau.UndeadTest.initRepository(UndeadTest.java:93)
+
+getAllTest(com.s14222.tau.UndeadTest)  Time elapsed: 0.005 sec  <<< ERROR!
+java.lang.NullPointerException: null
+	at com.s14222.tau.UndeadTest.dropRepository(UndeadTest.java:104)
+
+TestDodania(com.s14222.tau.UndeadTest)  Time elapsed: 0.004 sec  <<< ERROR!
+java.lang.NullPointerException: null
+	at com.s14222.tau.UndeadTest.initRepository(UndeadTest.java:93)
+
+TestDodania(com.s14222.tau.UndeadTest)  Time elapsed: 0.005 sec  <<< ERROR!
+java.lang.NullPointerException: null
+	at com.s14222.tau.UndeadTest.dropRepository(UndeadTest.java:104)
+
+TestUsuniecia(com.s14222.tau.UndeadTest)  Time elapsed: 0.004 sec  <<< ERROR!
+java.lang.NullPointerException: null
+	at com.s14222.tau.UndeadTest.initRepository(UndeadTest.java:93)
+
+TestUsuniecia(com.s14222.tau.UndeadTest)  Time elapsed: 0.004 sec  <<< ERROR!
+java.lang.NullPointerException: null
+	at com.s14222.tau.UndeadTest.dropRepository(UndeadTest.java:104)
+

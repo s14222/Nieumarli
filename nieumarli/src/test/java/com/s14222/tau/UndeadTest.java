@@ -8,60 +8,40 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import java.sql.SQLException;
+
+import static org.hamcrest.CoreMatchers.*;
+
+
 import java.util.List;
+
+import org.junit.After;
+
 
 public class UndeadTest {
 
     UndeadRepository undeadRepository;
+
     @Test
     public void TestDodania(){
-        Undead undead = new Undead(0, "Trups",1,100,100);
-        try {
-            UndeadManagerImpl undeadManager = new UndeadManagerImpl();
-            undeadManager.addUndead(undead);
-            List<Undead> undeads = undeadManager.getAllUndeads();
-            for(Undead u : undeads) {
-                if(u.getNazwa().contains("Trups")){
+        Undead undead1 = new Undead(7, "Trups",1,100,100);
 
-                    return;
-                }
-            }
-        } catch (SQLException e) {
-            fail();
-        }
-        fail();
+        undeadRepository.add(undead1);
+
+        assertNotNull(undeadRepository.getById(undead1.getId()));
 
     }
 
     @Test
     public void TestUsuniecia() {
-        Undead undead = new Undead(0, "Trups", 1, 100, 100);
-        Undead toDelete = null;
-        try {
-            UndeadManagerImpl undeadManager = new UndeadManagerImpl();
-            undeadManager.addUndead(undead);
-            List<Undead> undeads = undeadManager.getAllUndeads();
 
-            for (Undead u : undeads) {
-                if (u.getNazwa().contains("Trups")) {
-                    toDelete = u;
-                }
-            }
-            if(toDelete == null) {
-                fail();
-            }
-            undeadManager.deleteUndead(toDelete);
-            undeads = undeadManager.getAllUndeads();
-            for (Undead u : undeads) {
-                if (u.getNazwa().contains("Trups")) {
-                   fail();
-                }
-            }
-        } catch (SQLException e) {
-            fail();
+        undeadRepository.deleteById(6);
+
+        List<Undead> undeads = undeadRepository.getAll();
+
+        assertNull(undeadRepository.getById(6).getNazwa());
+        assertEquals(true, !undeads.isEmpty());
+
         }
-    }
 
     @Test
     public void TestUpdate() {
@@ -69,30 +49,59 @@ public class UndeadTest {
         Undead undeadToUpdate = undeadRepository.getById(2);
 
         undeadToUpdate.setNazwa("Zombie");
+
         undeadRepository.updateById(undeadToUpdate);
 
+        assertThat(undeadRepository.getById(2).getNazwa(), is(undeadToUpdate.getNazwa()));
         assertEquals(undeadRepository.getById(2).getNazwa(), undeadToUpdate.getNazwa());
-        assertNotNull(undeadRepository.getById(1));
+
+        assertFalse("nie powinno modyfikowac",undeadRepository.getById(4).getNazwa().equals(undeadToUpdate.getNazwa()));
 
 
+    }
 
+    @Test
+    public void getAllTest(){
+
+        List<Undead> undeadsList = undeadRepository.getAll();
+
+        assertNotNull(undeadsList);
+
+        Undead undead = undeadsList.get(3);
+        assertNotNull(undead);
+
+        try{
+            Undead undeadToCatch = undeadsList.get(0);
+        }
+
+        catch(IndexOutOfBoundsException aIndexOutOfBoundsException){
+            assertThat(aIndexOutOfBoundsException.getMessage(), is("Index: 3, Size: 3"));
+        }
     }
 
     @Before
     public void initRepository(){
         undeadRepository = UndeadRepositoryFactory.getInstance();
 
+        Undead zeroUndead = new Undead(0, "Trups", 1, 100, 100);
         Undead firstUndead = new Undead(1 , "Duch", 1, 200, 200);
         Undead secondUndead = new Undead(2, "Wampir", 2,200,150);
         Undead thirdUndead = new Undead(4, "Wilkolak", 1,100,100);
         Undead fourthUndead = new Undead(5, "Gnom", 4, 45, 50);
         Undead fifthUndead = new Undead(6, "Elf", 2, 120, 1);
 
+        undeadRepository.add(zeroUndead);
         undeadRepository.add(firstUndead);
         undeadRepository.add(secondUndead);
         undeadRepository.add(thirdUndead);
         undeadRepository.add(fourthUndead);
         undeadRepository.add(fifthUndead);
+    }
+
+    
+    @After
+    public void dropRepository(){
+        undeadRepository.dropTable();
     }
 }
 
