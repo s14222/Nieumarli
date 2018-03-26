@@ -48,6 +48,7 @@ public class UndeadTest {
                 fail();
             }
             undeadManager.deleteUndead(toDelete);
+            List<Undead> undeads = undeadManager.getAllUndeads();
             for (Undead u : undeads) {
                 if (u.getNazwa().contains("Trups")) {
                    fail();
