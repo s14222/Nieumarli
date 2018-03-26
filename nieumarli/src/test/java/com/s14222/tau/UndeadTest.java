@@ -56,7 +56,6 @@ public class UndeadTest {
         } catch (SQLException e) {
             fail();
         }
-        fail();
     }
 }
 
