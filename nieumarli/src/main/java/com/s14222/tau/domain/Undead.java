@@ -52,7 +52,9 @@ public class Undead{
     
     }
     public Undead(){}
+
     public Undead(int id, String nazwa, int level, int zycie, int sila){
+
         this.id = id;
         this.nazwa = nazwa;
         this.level = level;

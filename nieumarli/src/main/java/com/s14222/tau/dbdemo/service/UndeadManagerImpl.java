@@ -1,6 +1,7 @@
 package com.s14222.tau.dbdemo.service;
 
 import com.s14222.tau.domain.Undead;
+import com.s14222.tau.repository.UndeadRepository;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -14,17 +15,27 @@ public class UndeadManagerImpl {
     private PreparedStatement deleteUndeadsStmt;
     private PreparedStatement updateUndeadsStmt;
     private PreparedStatement getAllUndeadsStmt;
+    private PreparedStatement dropTableStm;
+    private PreparedStatement getByIdStm;
 
-    public UndeadManagerImpl(Connection connection) throws SQLException {
-        this.connection = connection;
-        if (!isDatabaseReady()) {
-            createTables();
+    public UndeadManagerImpl(Connection connection) {
+
+        try {
+            this.connection = connection;
+
+            if (!isDatabaseReady()) {
+                createTables();
+            }
+            setConnection(connection);
         }
-        setConnection(connection);
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
+    /*public UndeadManagerImpl() throws SQLException {
+        public static UndeadRepository getInstance(){
 
-
-    public UndeadManagerImpl() throws SQLException {
         String url = "jdbc:mysql://localhost/aga";
         try {
             Class.forName("com.mysql.jdbc.Driver");  //STEP 2: Register JDBC driver
@@ -33,13 +44,12 @@ public class UndeadManagerImpl {
         }
 
         this.connection = DriverManager.getConnection(url,"root", "");
-        if (!isDatabaseReady()) {
-            createTables();
-        }
-        setConnection(connection);
+
     }
+    }*/
 
     public void createTables() throws SQLException {
+
         connection.createStatement().executeUpdate(
                 "CREATE TABLE `aga`.`Undeads` ( " +
                         "`id` INT NOT NULL AUTO_INCREMENT , " +
@@ -53,20 +63,21 @@ public class UndeadManagerImpl {
     public boolean isDatabaseReady() {
         try {
             ResultSet rs = connection.getMetaData().getTables(null, null, null, null);//pobranie wszystkich tbel z bazy danych
-            boolean tableExists = false; //zakladamy ze tabela nie istnieje
-            while (rs.next()) { //przegladamy wszystki tabele w kolejcji rs
-                if ("undeads".equalsIgnoreCase(rs.getString("TABLE_NAME"))) { //if tabela nazywa sie undead to wejdz w ifa
-                    tableExists = true; //nie musimy przegladac dalej
+            boolean tableExists = false;
+            while (rs.next()) {
+                if ("undeads".equalsIgnoreCase(rs.getString("TABLE_NAME"))) { //if tabela nazywa sie undead
+                    tableExists = true;
                     break;
                 }
             }
             return tableExists;
+
         } catch (SQLException e) {
             return false;
         }
     }
 
-    public int addUndead(Undead undead) { //dodanie do bazy
+    public int addUndead(Undead undead) {
         int count = 0;
         try {
             addUndeadStmt.setString(1, undead.getNazwa());
@@ -74,7 +85,7 @@ public class UndeadManagerImpl {
             addUndeadStmt.setInt(3, undead.getSila());
             addUndeadStmt.setInt(4, undead.getLevel());
 
-            count = addUndeadStmt.executeUpdate(); //ile wierszy sie dodalo
+            count = addUndeadStmt.executeUpdate();
 
         } catch (SQLException e) {
             throw new IllegalStateException(e.getMessage() + "\n" + e.getStackTrace().toString());
@@ -92,7 +103,9 @@ public class UndeadManagerImpl {
         try {
             deleteUndeadsStmt.setInt(1, undead.getId());
             deleteUndeadsStmt.executeUpdate();
+
         } catch (SQLException e) {
+
             e.printStackTrace();
         }
     }
@@ -100,25 +113,26 @@ public class UndeadManagerImpl {
     public List<Undead> getAllUndeads() {
         List<Undead> undeads = new LinkedList<>();
         try {
-            ResultSet rs = getAllUndeadsStmt.executeQuery(); //pobieramy wszystkich
+            ResultSet rs = getAllUndeadsStmt.executeQuery();
 
-            while (rs.next()) { //zamiana na obiekty
+            while (rs.next()) {
                 Undead u = new Undead();
                 u.setId(rs.getInt("id"));
                 u.setNazwa(rs.getString("nazwa"));
                 u.setZycie(rs.getInt("zycie"));
                 u.setSila(rs.getInt("sila"));
                 u.setLevel(rs.getInt("level"));
-                undeads.add(u); //dodanie do listy obiektu (u obiekt)
+                undeads.add(u);
             }
 
         } catch (SQLException e) {
+
             throw new IllegalStateException(e.getMessage() + "\n" + e.getStackTrace().toString());
         }
         return undeads;
     }
 
-public void updateUndead(Undead undead){
+public void updateById(Undead undead){
 
 
     try {
@@ -135,8 +149,46 @@ public void updateUndead(Undead undead){
 
     }
 
-
     }
+
+    public Undead getById(int id){
+
+        Undead undead = new Undead();
+
+        try{
+            getByIdStm.setLong(1, id);
+            ResultSet rs = getByIdStm.executeQuery();
+
+            while(rs.next()){
+                undead.setId(rs.getInt("id"));
+                undead.setNazwa(rs.getString("nazwa"));
+                undead.setZycie(rs.getInt("Zycie"));
+                undead.setSila(rs.getInt("Sila"));
+                undead.setLevel(rs.getInt("Level"));
+            }
+        }
+
+        catch (SQLException e){
+
+            throw new IllegalStateException(e.getMessage() + "\n" + e.getStackTrace().toString());
+        }
+
+        return undead;
+    }
+
+
+    public void dropTable() {
+
+        try{
+            dropTableStm.executeUpdate();
+        }
+
+        catch (SQLException e){
+            throw new IllegalStateException(e.getMessage() + "\n" + e.getStackTrace().toString());
+        }
+    }
+
+
     public Connection getConnection() {
 
         return connection;
@@ -145,6 +197,7 @@ public void updateUndead(Undead undead){
 
     public void setConnection(Connection connection) throws SQLException {
         this.connection = connection;
+
         addUndeadStmt = connection.
                 prepareStatement
                         ("INSERT INTO `undeads` (`id`, `nazwa`, `zycie`, `sila`, `level`) VALUES (NULL, ?, ?, ?, ?);");
@@ -154,5 +207,9 @@ public void updateUndead(Undead undead){
                 prepareStatement("DELETE FROM `undeads` WHERE `undeads`.`id` = ?");
         updateUndeadsStmt = connection.
                 prepareStatement("UPDATE `undeads` SET `nazwa` = ?, `zycie` = ?, `sila` = ?, `level` = ? WHERE `undeads`.`id` = ?;");
+        getByIdStm = connection.
+                prepareStatement( "SELECT * FROM undeads WHERE id = ?");
+        dropTableStm = connection.
+                prepareStatement("DROP TABLE undeads");
     }
 }
