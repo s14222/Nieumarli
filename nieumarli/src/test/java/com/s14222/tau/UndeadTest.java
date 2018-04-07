@@ -5,6 +5,7 @@ import com.s14222.tau.domain.Undead;
 import com.s14222.tau.repository.UndeadRepository;
 import com.s14222.tau.repository.UndeadRepositoryFactory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -16,7 +17,7 @@ import java.util.List;
 
 import org.junit.After;
 
-
+@Ignore
 public class UndeadTest {
 
     UndeadRepository undeadRepository;
