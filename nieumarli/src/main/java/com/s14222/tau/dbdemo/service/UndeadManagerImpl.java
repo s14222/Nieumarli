@@ -33,6 +33,8 @@ public class UndeadManagerImpl implements UndeadRepository {
         }
 
     }
+    public UndeadManagerImpl() {
+    }
     /*public UndeadManagerImpl() throws SQLException {
         public static UndeadRepository getInstance(){
 
