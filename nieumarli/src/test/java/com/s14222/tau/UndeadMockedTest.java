@@ -17,6 +17,7 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
 import java.sql.*;
 
 import java.sql.SQLException;
@@ -76,7 +77,7 @@ public class UndeadMockedTest {
     @Test
     public void TestDodania() throws SQLException {
         when(insertStatementMock.executeUpdate()).thenReturn(1);
-        Undead undead1 = new Undead(0, "Trups",1,100,100);
+        Undead undead1 = new Undead(0, "Trups", 1, 100, 100);
         assertEquals(1, undeadRepository.add(undead1));
 
         verify(insertStatementMock, times(1)).setString(1, "Trups");
@@ -89,7 +90,7 @@ public class UndeadMockedTest {
     @Test(expected = IllegalStateException.class)
     public void TestDodaniaZNullem() throws SQLException {
         when(insertStatementMock.executeUpdate()).thenThrow(new SQLException());
-        Undead undead1 = new Undead(0, null,1,100,100);
+        Undead undead1 = new Undead(0, null, 1, 100, 100);
         assertEquals(1, undeadRepository.add(undead1));
 
     }
@@ -100,15 +101,103 @@ public class UndeadMockedTest {
         assertEquals(1, undeadRepository.deleteById(6));
     }
 
+    abstract class AbstractResultSet implements ResultSet {
+        int i = 0;
+
+        @Override
+        public int getInt(String s) throws SQLException {
+            return 1;
+        }
+
+        @Override
+        public String getString(String columnLabel) throws SQLException {
+            return "Zombie";
+        }
+
+        @Override
+        public boolean next() throws SQLException {
+            if (i == 1)
+                return false;
+            i++;
+            return true;
+        }
+    }
+
+    abstract class AbstractResultSetAll implements ResultSet {
+        int i = 0;
+
+        @Override
+        public int getInt(String s) throws SQLException {
+            return 1;
+        }
+
+        @Override
+        public String getString(String columnLabel) throws SQLException {
+            return "Zombie";
+        }
+
+        @Override
+        public boolean next() throws SQLException {
+            if (i == 1)
+                return false;
+            i++;
+            return true;
+        }
+    }
+
+    @Test
+    public void TestAll() throws SQLException {
+        AbstractResultSet mockedResultSet = mock(AbstractResultSet.class);
+        when(mockedResultSet.next()).thenCallRealMethod();
+        when(mockedResultSet.getInt("id")).thenCallRealMethod();
+        when(mockedResultSet.getString("nazwa")).thenCallRealMethod();
+        when(mockedResultSet.getInt("level")).thenCallRealMethod();
+        when(mockedResultSet.getInt("zycie")).thenCallRealMethod();
+        when(mockedResultSet.getInt("sila")).thenCallRealMethod();
+        when(selectStatementMock.executeQuery()).thenReturn(mockedResultSet);
+
+        assertEquals(1, undeadRepository.getAll().size());
+
+        verify(selectStatementMock, times(1)).executeQuery();
+        verify(mockedResultSet, times(1)).getInt("id");
+        verify(mockedResultSet, times(1)).getString("nazwa");
+        verify(mockedResultSet, times(1)).getInt("level");
+        verify(mockedResultSet, times(1)).getInt("zycie");
+        verify(mockedResultSet, times(1)).getInt("sila");
+        verify(mockedResultSet, times(2)).next();
+    }
+
+    @Test
+    public void TestById() throws SQLException {
+        AbstractResultSet mockedResultSet = mock(AbstractResultSet.class);
+        when(mockedResultSet.next()).thenCallRealMethod();
+        when(mockedResultSet.getInt("id")).thenCallRealMethod();
+        when(mockedResultSet.getString("nazwa")).thenCallRealMethod();
+        when(mockedResultSet.getInt("level")).thenCallRealMethod();
+        when(mockedResultSet.getInt("zycie")).thenCallRealMethod();
+        when(mockedResultSet.getInt("sila")).thenCallRealMethod();
+        when(selectByIdStatementMock.executeQuery()).thenReturn(mockedResultSet);
+
+        assertNotNull(undeadRepository.getById(1));
+
+        verify(selectByIdStatementMock, times(1)).executeQuery();
+        verify(mockedResultSet, times(1)).getInt("id");
+        verify(mockedResultSet, times(1)).getString("nazwa");
+        verify(mockedResultSet, times(1)).getInt("level");
+        verify(mockedResultSet, times(1)).getInt("zycie");
+        verify(mockedResultSet, times(1)).getInt("sila");
+        verify(mockedResultSet, times(2)).next();
+    }
+
     @Test
     public void TestUpdate() throws SQLException {
-        Undead undead1 = new Undead(1, "Trups",1,100,100);
+        Undead undead1 = new Undead(1, "Trups", 1, 100, 100);
         doReturn(undead1).when(undeadRepositoryMock).getById(isA(Integer.class));
         Undead undeadToUpdate = undeadRepositoryMock.getById(2);
         undeadToUpdate.setNazwa("Zombie");
         undeadRepository.updateById(undeadToUpdate);
 
-        Undead undead2 = new Undead(1, "Zombie",1,100,100);
+        Undead undead2 = new Undead(1, "Zombie", 1, 100, 100);
         doReturn(undead2).when(undeadRepositoryMock).getById(2);
 
         assertThat(undeadRepositoryMock.getById(2).getNazwa(), is(undeadToUpdate.getNazwa()));
