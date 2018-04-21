@@ -2,11 +2,14 @@ package com.s14222.tau.dbdemo.service;
 
 import com.s14222.tau.domain.Undead;
 import com.s14222.tau.repository.UndeadRepository;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
+
+@Component("undeadMan")
 public class UndeadManagerImpl implements UndeadRepository {
 
 
@@ -33,7 +36,23 @@ public class UndeadManagerImpl implements UndeadRepository {
         }
 
     }
+
     public UndeadManagerImpl() {
+        String url = "jdbc:hsqldb:hsql://localhost/workdb";
+
+        try {
+            this.connection = DriverManager.getConnection(url);
+
+            if (!isDatabaseReady()) {
+                createTables();
+            }
+            setConnection(connection);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public UndeadManagerImpl(int i) {
     }
     /*public UndeadManagerImpl() throws SQLException {
         public static UndeadRepository getInstance(){

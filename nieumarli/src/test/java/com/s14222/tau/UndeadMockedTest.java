@@ -64,7 +64,8 @@ public class UndeadMockedTest {
                 .thenReturn(selectByIdStatementMock);
         when(connectionMock.prepareStatement("UPDATE Undeads SET nazwa = ?, zycie = ?, sila = ?, level = ? WHERE id = ?"))
                 .thenReturn(updateStatementMock);
-        undeadRepository = new UndeadManagerImpl();
+
+        undeadRepository = new UndeadManagerImpl(1);
         undeadRepositoryMock = mock(UndeadManagerImpl.class);
         undeadRepository.setConnection(connectionMock);
         verify(connectionMock).prepareStatement("INSERT INTO Undeads (nazwa, zycie, sila, level) VALUES ( ?, ?, ?, ?)");
