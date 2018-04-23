@@ -65,9 +65,11 @@ public class UndeadMockedTest {
         when(connectionMock.prepareStatement("UPDATE Undeads SET nazwa = ?, zycie = ?, sila = ?, level = ? WHERE id = ?"))
                 .thenReturn(updateStatementMock);
 
-        undeadRepository = new UndeadManagerImpl(1);
+        undeadRepository = new UndeadManagerImpl();
         undeadRepositoryMock = mock(UndeadManagerImpl.class);
         undeadRepository.setConnection(connectionMock);
+
+
         verify(connectionMock).prepareStatement("INSERT INTO Undeads (nazwa, zycie, sila, level) VALUES ( ?, ?, ?, ?)");
         verify(connectionMock).prepareStatement("SELECT * FROM Undeads");
         verify(connectionMock).prepareStatement("DELETE FROM Undeads WHERE id = ?");
@@ -79,8 +81,9 @@ public class UndeadMockedTest {
     public void TestDodania() throws SQLException {
         when(insertStatementMock.executeUpdate()).thenReturn(1);
         Undead undead1 = new Undead(0, "Trups", 1, 100, 100);
-        assertEquals(1, undeadRepository.add(undead1));
+        assertEquals(1, undeadRepository.add(undead1));//dodawanie dwoch rzeczy
 
+        //Allows verifying that certain behavior happened at least once / exact number of times / never.
         verify(insertStatementMock, times(1)).setString(1, "Trups");
         verify(insertStatementMock, times(1)).setInt(2, 100);
         verify(insertStatementMock, times(1)).setInt(3, 100);
@@ -90,6 +93,7 @@ public class UndeadMockedTest {
 
     @Test(expected = IllegalStateException.class)
     public void TestDodaniaZNullem() throws SQLException {
+
         when(insertStatementMock.executeUpdate()).thenThrow(new SQLException());
         Undead undead1 = new Undead(0, null, 1, 100, 100);
         assertEquals(1, undeadRepository.add(undead1));
@@ -98,8 +102,12 @@ public class UndeadMockedTest {
 
     @Test
     public void TestUsuniecia() throws SQLException {
+
         when(deleteStatementMock.executeUpdate()).thenReturn(1);
         assertEquals(1, undeadRepository.deleteById(6));
+        verify(deleteStatementMock, times(1)).executeUpdate();
+
+
     }
 
     abstract class AbstractResultSet implements ResultSet {
@@ -124,30 +132,10 @@ public class UndeadMockedTest {
         }
     }
 
-    abstract class AbstractResultSetAll implements ResultSet {
-        int i = 0;
-
-        @Override
-        public int getInt(String s) throws SQLException {
-            return 1;
-        }
-
-        @Override
-        public String getString(String columnLabel) throws SQLException {
-            return "Zombie";
-        }
-
-        @Override
-        public boolean next() throws SQLException {
-            if (i == 1)
-                return false;
-            i++;
-            return true;
-        }
-    }
 
     @Test
     public void TestAll() throws SQLException {
+
         AbstractResultSet mockedResultSet = mock(AbstractResultSet.class);
         when(mockedResultSet.next()).thenCallRealMethod();
         when(mockedResultSet.getInt("id")).thenCallRealMethod();
@@ -179,6 +167,7 @@ public class UndeadMockedTest {
         when(mockedResultSet.getInt("sila")).thenCallRealMethod();
         when(selectByIdStatementMock.executeQuery()).thenReturn(mockedResultSet);
 
+        //Asserts that an object isn't null.
         assertNotNull(undeadRepository.getById(1));
 
         verify(selectByIdStatementMock, times(1)).executeQuery();
@@ -192,17 +181,19 @@ public class UndeadMockedTest {
 
     @Test
     public void TestUpdate() throws SQLException {
-        Undead undead1 = new Undead(1, "Trups", 1, 100, 100);
+
+        Undead undead1 = new Undead(2, "Trups", 1, 100, 100);
         doReturn(undead1).when(undeadRepositoryMock).getById(isA(Integer.class));
         Undead undeadToUpdate = undeadRepositoryMock.getById(2);
         undeadToUpdate.setNazwa("Zombie");
         undeadRepository.updateById(undeadToUpdate);
 
-        Undead undead2 = new Undead(1, "Zombie", 1, 100, 100);
+        Undead undead2 = new Undead(2, "Zombie", 1, 100, 100);
         doReturn(undead2).when(undeadRepositoryMock).getById(2);
 
         assertThat(undeadRepositoryMock.getById(2).getNazwa(), is(undeadToUpdate.getNazwa()));
         assertEquals(undeadRepositoryMock.getById(2).getNazwa(), undeadToUpdate.getNazwa());
+
         verify(updateStatementMock, times(1)).setString(1, "Zombie");
         verify(updateStatementMock, times(1)).setInt(2, 100);
         verify(updateStatementMock, times(1)).setInt(3, 100);

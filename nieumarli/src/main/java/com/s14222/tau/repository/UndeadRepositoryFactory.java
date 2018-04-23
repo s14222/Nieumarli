@@ -2,15 +2,13 @@ package com.s14222.tau.repository;
 
 import com.s14222.tau.dbdemo.service.UndeadManagerImpl;
 import com.s14222.tau.domain.*;
-
-import java.sql.*;
 import static java.sql.DriverManager.getConnection;
+import java.sql.*;
+
 
 public class UndeadRepositoryFactory{
 
         public static UndeadRepository getInstance() {
-
-
 
             try {
 

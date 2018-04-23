@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.junit.After;
 
-//@Ignore
+@Ignore
 public class UndeadTest {
 
     UndeadRepository undeadRepository;

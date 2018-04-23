@@ -1,4 +1,4 @@
-package com.s14222.tau.config;
+package com.s14222.tau.configuration;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -9,9 +9,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import java.util.List;
 
 @Configuration
-@EnableWebMvc // tak jak w XML: <mvc:annotation-driven />
+@EnableWebMvc
 @ComponentScan({"com.s14222.tau"})
-public class RestConfiguration extends WebMvcConfigurerAdapter {
+public class RestConfiguration extends WebMvcConfigurerAdapter{
+
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> messageConverters) {
         super.configureMessageConverters(messageConverters);

@@ -1,4 +1,4 @@
-package com.s14222.tau.config;
+package com.s14222.tau.configuration;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
@@ -13,7 +13,8 @@ import javax.servlet.ServletRegistration;
 public class RestInitializer implements WebApplicationInitializer {
 
     @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
+    public void onStartup(ServletContext servletContext) throws ServletException{
+
         WebApplicationContext context = getContext();
         servletContext.addListener(new ContextLoaderListener(context));
         ServletRegistration.Dynamic dispatcher =
@@ -22,9 +23,9 @@ public class RestInitializer implements WebApplicationInitializer {
         dispatcher.addMapping("/*");
     }
 
-    private AnnotationConfigWebApplicationContext getContext() {
+    private AnnotationConfigWebApplicationContext getContext(){
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.setConfigLocation("com.s14222.tau.config");
+        context.setConfigLocation("com.s14222.tau.configuration");
         return context;
     }
 }

@@ -2,16 +2,15 @@ package com.s14222.tau.dbdemo.service;
 
 import com.s14222.tau.domain.Undead;
 import com.s14222.tau.repository.UndeadRepository;
+
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
-
-@Component("undeadMan")
+@Component
 public class UndeadManagerImpl implements UndeadRepository {
-
 
     private Connection connection;
     private PreparedStatement addUndeadStmt;
@@ -37,37 +36,18 @@ public class UndeadManagerImpl implements UndeadRepository {
 
     }
 
-    public UndeadManagerImpl() {
-        String url = "jdbc:hsqldb:hsql://localhost/workdb";
-
-        try {
-            this.connection = DriverManager.getConnection(url);
-
-            if (!isDatabaseReady()) {
-                createTables();
-            }
-            setConnection(connection);
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public UndeadManagerImpl() throws SQLException {
+        this.connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/workdb");
+        checkDatabaseAndSetConnection(this.connection);
     }
-    public UndeadManagerImpl(int i) {
-    }
-    /*public UndeadManagerImpl() throws SQLException {
-        public static UndeadRepository getInstance(){
 
-        String url = "jdbc:mysql://localhost/aga";
-        try {
-            Class.forName("com.mysql.jdbc.Driver");  //STEP 2: Register JDBC driver
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+    void checkDatabaseAndSetConnection(Connection connection) throws SQLException{
+        if (!isDatabaseReady()) {
+            createTables();
         }
 
-        this.connection = DriverManager.getConnection(url,"root", "");
-
+        setConnection(connection);
     }
-    }*/
 
     public void createTables() throws SQLException {
 
