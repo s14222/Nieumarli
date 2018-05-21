@@ -123,7 +123,7 @@ public class UndeadManagerImpl implements UndeadRepository {
 
             while (rs.next()) {
                 Undead u = new Undead();
-                u.setId(rs.getInt("id"));
+                u.setId(rs.getLong("id"));
                 u.setNazwa(rs.getString("nazwa"));
                 u.setZycie(rs.getInt("zycie"));
                 u.setSila(rs.getInt("sila"));
@@ -148,7 +148,7 @@ public class UndeadManagerImpl implements UndeadRepository {
         updateUndeadsStmt.setInt(2,undead.getZycie());
         updateUndeadsStmt.setInt(3,undead.getSila());
         updateUndeadsStmt.setInt(4,undead.getLevel());
-        updateUndeadsStmt.setInt(5,undead.getId());
+        updateUndeadsStmt.setLong(5,undead.getId());
         count = updateUndeadsStmt.executeUpdate();
 
     } catch(SQLException e) {
@@ -168,7 +168,7 @@ public class UndeadManagerImpl implements UndeadRepository {
             ResultSet rs = getByIdStm.executeQuery();
 
             while(rs.next()){
-                undead.setId(rs.getInt("id"));
+                undead.setId(rs.getLong("id"));
                 undead.setNazwa(rs.getString("nazwa"));
                 undead.setZycie(rs.getInt("zycie"));
                 undead.setSila(rs.getInt("sila"));

@@ -11,15 +11,15 @@ public interface UndeadRepository{
     public Connection getConnection();
     public void setConnection(Connection connection) throws SQLException;
 
-    public Undead getById(int id);
+    public Undead getById(Long id);
     public List<Undead> getAll();
     public int add(Undead undead);
 
 
-    public int deleteById(int id);
+    public Long deleteById(Long id);
 
 
-    public int updateById(Undead undead);
+    public Long updateById(Undead undead);
 
 
     void dropTable();

@@ -80,7 +80,7 @@ public class UndeadMockedTest {
     @Test
     public void TestDodania() throws SQLException {
         when(insertStatementMock.executeUpdate()).thenReturn(1);
-        Undead undead1 = new Undead(0, "Trups", 1, 100, 100);
+        Undead undead1 = new Undead((long) 0, "Trups", 1, 100, 100);
         assertEquals(1, undeadRepository.add(undead1));//dodawanie dwoch rzeczy
 
         //Allows verifying that certain behavior happened at least once / exact number of times / never.
@@ -95,7 +95,7 @@ public class UndeadMockedTest {
     public void TestDodaniaZNullem() throws SQLException {
 
         when(insertStatementMock.executeUpdate()).thenThrow(new SQLException());
-        Undead undead1 = new Undead(0, null, 1, 100, 100);
+        Undead undead1 = new Undead((long) 0, null, 1, 100, 100);
         assertEquals(1, undeadRepository.add(undead1));
 
     }
@@ -104,7 +104,7 @@ public class UndeadMockedTest {
     public void TestUsuniecia() throws SQLException {
 
         when(deleteStatementMock.executeUpdate()).thenReturn(1);
-        assertEquals(1, undeadRepository.deleteById(6));
+        assertEquals(1, undeadRepository.deleteById((long)6));
         verify(deleteStatementMock, times(1)).executeUpdate();
 
 
@@ -168,7 +168,7 @@ public class UndeadMockedTest {
         when(selectByIdStatementMock.executeQuery()).thenReturn(mockedResultSet);
 
         //Asserts that an object isn't null.
-        assertNotNull(undeadRepository.getById(1));
+        assertNotNull(undeadRepository.getById((long)1));
 
         verify(selectByIdStatementMock, times(1)).executeQuery();
         verify(mockedResultSet, times(1)).getInt("id");
@@ -182,17 +182,17 @@ public class UndeadMockedTest {
     @Test
     public void TestUpdate() throws SQLException {
 
-        Undead undead1 = new Undead(2, "Trups", 1, 100, 100);
-        doReturn(undead1).when(undeadRepositoryMock).getById(isA(Integer.class));
-        Undead undeadToUpdate = undeadRepositoryMock.getById(2);
+        Undead undead1 = new Undead((long) 2, "Trups", 1, 100, 100);
+        doReturn(undead1).when(undeadRepositoryMock).getById(Long.valueOf(isA(Integer.class)));
+        Undead undeadToUpdate = undeadRepositoryMock.getById((long)2);
         undeadToUpdate.setNazwa("Zombie");
         undeadRepository.updateById(undeadToUpdate);
 
-        Undead undead2 = new Undead(2, "Zombie", 1, 100, 100);
-        doReturn(undead2).when(undeadRepositoryMock).getById(2);
+        Undead undead2 = new Undead((long) 2, "Zombie", 1, 100, 100);
+        doReturn(undead2).when(undeadRepositoryMock).getById((long)2);
 
-        assertThat(undeadRepositoryMock.getById(2).getNazwa(), is(undeadToUpdate.getNazwa()));
-        assertEquals(undeadRepositoryMock.getById(2).getNazwa(), undeadToUpdate.getNazwa());
+        assertThat(undeadRepositoryMock.getById((long)2).getNazwa(), is(undeadToUpdate.getNazwa()));
+        assertEquals(undeadRepositoryMock.getById((long)2).getNazwa(), undeadToUpdate.getNazwa());
 
         verify(updateStatementMock, times(1)).setString(1, "Zombie");
         verify(updateStatementMock, times(1)).setInt(2, 100);
